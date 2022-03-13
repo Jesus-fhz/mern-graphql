@@ -4,7 +4,8 @@ import ApolloProvider  from "./ApolloProvider"
 
 ReactDOM.render(
   <React.StrictMode>
-    <ApolloProvider/>
+   {/* Needed to import apollo provider lke this I don't know why */}
+   {ApolloProvider}
   </React.StrictMode>,
   document.getElementById('root')
 );
