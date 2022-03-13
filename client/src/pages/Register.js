@@ -1,24 +1,25 @@
 import { useState } from 'react'
+import {useNavigate} from 'react-router-dom'
 import { Form, Button }  from 'semantic-ui-react'
 import { gql } from 'graphql-tag'
 import { useMutation } from '@apollo/client'
+import { useForm } from '../CustomHooks/hooks'
+ 
 
 function Register(){
       
+    const navigate = useNavigate();
     const [errors, setErrors] = useState({})
-    const [values,setValues] = useState({
+    const { onChange, onSubmit, values } = useForm(registerUser, {
         username: '',
         email: '',
         password: '',
         confirmPassword:''
     })
-
-    const onChange = (ev) => {
-        setValues({...values, [ev.target.name] : ev.target.value})
-    }
-
+    
     const [addUser, {loading}] = useMutation(REGISTER_USER, {
-        update(proxy, result){
+         update(_, result){
+             navigate('/');
         },
         onError(err){
             console.log(err.graphQLErrors[0].extensions.errors);
@@ -27,11 +28,10 @@ function Register(){
         variables: values
     })
 
-    const onSubmit = (ev) =>{
-        ev.preventDefault();
-        addUser();
+    //Hoisting registerUser to call addUser on the top
+    function registerUser(){
+        addUser()
     }
-
     
 
     return(
