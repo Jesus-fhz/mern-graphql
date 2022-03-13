@@ -8,7 +8,9 @@ module.exports = gql`
         username: String!,
         createdAt: Date!,
         comments:[Comment]!, #If you put the exclamation mark inside array it means at least one element must be present
-        likes: [Like]!
+        likes: [Like]!,
+        likeCount: Int!,
+        commentCount: Int!,
 
     },
 
@@ -54,5 +56,9 @@ module.exports = gql`
         deleteComment(postID: String!, commentID: String!): Post!,
         likePost(postID: String!): Post!
 
+    }
+
+    type Subscription{
+        newPost: Post!
     }
 `

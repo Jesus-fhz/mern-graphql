@@ -2,10 +2,12 @@ const { ApolloServer } = require('apollo-server');
 const db = require('./config/db');
 const typeDefs  = require('./grahpql/typeDefs');
 const resolvers  = require('./grahpql/resolvers/index');
+
+
 const server = new ApolloServer({ 
     typeDefs,
     resolvers,
-    context: ({req}) =>({req})
+    context: ({ req }) =>({req})
 })
 
 //Once connection is establish we run server
