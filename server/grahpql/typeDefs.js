@@ -6,9 +6,25 @@ module.exports = gql`
         id: ID!,  #Exclamation mark means that is required
         body: String!,
         username: String!,
-        createdAt: Date!
+        createdAt: Date!,
+        comments:[Comment]!, #If you put the exclamation mark inside array it means at least one element must be present
+        likes: [Like]!
+
     },
 
+    type Comment{
+        id: ID!,
+        createdAt: Date!,
+        username: String!,
+        body: String!
+    },
+
+    type Like{
+        id: ID!,
+        username: String!,
+        createdAt: Date!,
+    },
+        
     type User { #User model type
         id: ID!, 
         email: String!
@@ -33,7 +49,9 @@ module.exports = gql`
         register(registerInput: RegisterInput): User!,
         login(username: String!, password: String!): User!,
         createPost(body: String!): Post!,
-        deletePost(postID: ID!):String!
-
+        deletePost(postID: ID!):String!m,
+        createComment(postID: String!, body: String!): Post!,
+        deleteComment(postID: String!, commentID: ID!): Post!,
+        likePost(postID: String!): Post!
     }
 `

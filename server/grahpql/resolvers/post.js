@@ -1,7 +1,7 @@
 //RESOLVERS
 //For each query or mutuation there is a resolver, which processes any sort of logic 
 const Post = require('../../models/Post');
-const checkAuth = require('../../helpers/checkAuth');
+const checkAuth = require('../../middleware/checkAuth');
 const { AuthenticationError } = require('apollo-server');
 
 
