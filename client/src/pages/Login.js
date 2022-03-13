@@ -3,44 +3,36 @@ import {useNavigate} from 'react-router-dom'
 import { Form, Button }  from 'semantic-ui-react'
 import { gql } from 'graphql-tag'
 import { useMutation } from '@apollo/client'
+import { useForm } from '../CustomHooks/hooks'
 
 function Login(){
       
     const navigate = useNavigate();
     const [errors, setErrors] = useState({})
-    const [values,setValues] = useState({
+   
+    const {onChange, onSubmit, values} = useForm(logingCallback,{
         username: '',
-        email: '',
         password: '',
-        confirmPassword:''
     })
 
-    const onChange = (ev) => {
-        setValues({...values, [ev.target.name] : ev.target.value})
-    }
-
-    const [addUser, {loading}] = useMutation(REGISTER_USER, {
+    const [loginUser, {loading}] = useMutation(LOGIN_USER, {
          update(_, result){
              navigate('/');
         },
         onError(err){
-            console.log(err.graphQLErrors[0].extensions.errors);
             setErrors(err.graphQLErrors[0].extensions.errors);
         },
         variables: values
     })
 
-    const onSubmit = (ev) =>{
-        ev.preventDefault();
-        addUser();
+    function logingCallback(){
+        loginUser();
     }
-
-    
 
     return(
         <>
         <Form onSubmit={onSubmit} noValidate className={loading ? "loading": ""}>
-            <h1> Sign up </h1>
+            <h1> Login </h1>
             <Form.Input
                 type="text"
                 label="Username"
@@ -51,30 +43,12 @@ function Login(){
                 onChange={onChange}
             />
             <Form.Input
-                type="email"
-                label="Email"
-                placeholder="Email"
-                name="email"
-                error={errors.email ? true : false}
-                value={values.email}
-                onChange={onChange}
-            />
-            <Form.Input
                 type="password"
                 label="Password"
-                placeholder="Password"
+                placeholder="password"
                 name="password"
                 error={errors.password ? true : false}
                 value={values.password}
-                onChange={onChange}
-            />
-            <Form.Input
-                type="password"
-                label="Confirm Password"
-                placeholder="ConfirmPassword"
-                name="confirmPassword"
-                error={errors.confirmPassword ? true : false}
-                value={values.confirmPassword}
                 onChange={onChange}
             />
             <Button type="submit" primary>
@@ -97,21 +71,15 @@ function Login(){
     )
 }
 
-const REGISTER_USER = gql`
+const LOGIN_USER = gql`
   
-    mutation register(
+    mutation login(
         $username: String!
-        $email: String!
         $password: String!
-        $confirmPassword: String!
     ){
-        register(
-            registerInput:{
-                username: $username
-                email: $email
-                password: $password
-                confirmPassword: $confirmPassword
-            }
+        login(
+            username: $username
+            password: $password
         ){
             id email username createdAt token
         }
