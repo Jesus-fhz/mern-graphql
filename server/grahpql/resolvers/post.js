@@ -47,7 +47,6 @@ module.exports =  {
 
         async deletePost(_, {postID}, context){
             const user = checkAuth(context);
-            console.log(user);
             try {
                 const post = await Post.findById(postID)
                 if(!post) throw new Error("Post Not Found")
@@ -61,7 +60,7 @@ module.exports =  {
                 throw new Error(error)
             }
            
-        }
-    }
+        },       
+    },
 
 }
